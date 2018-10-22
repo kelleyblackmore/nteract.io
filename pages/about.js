@@ -1,28 +1,33 @@
 // @flow
-import * as React from "react";
+import * as React from 'react';
+import { GithubCircleIcon, WebIcon } from 'mdi-react';
 
-import Layout from "../components/layout/layout";
+import Layout from '../components/layout';
 import {
-  ContentSection,
-  ContentSectionPane
-} from "../components/content-section/content-section";
-import {
-  PageHeader,
-  PageHeaderLeft,
-  PageHeaderRight
-} from "../components/page-header/page-header";
-
-const contributorsData = require("nteract-members");
+  StyledPerson,
+  StyledPersonAvatar,
+  StyledPersonDetails,
+  StyledPersonName,
+  StyledPersonTitle,
+  StyledPersonSocial,
+  StyledPersonSocialItem,
+  StyledGridWrapper,
+  StyledGrid,
+} from '../components/layout/styled';
+import { ContentSection } from '../components/content-section';
+import { PageHeader } from '../components/page-header';
+import { Type } from '../components/typography';
+const contributorsData = require('nteract-members');
 
 const Mission = () => (
   <ContentSection>
-    <ContentSectionPane>
-      <h3>Mission</h3>
-      <p>
+    <ContentSection.Pane full>
+      <Type.h3>Mission</Type.h3>
+      <Type.p>
         Create fantastic interactive computing experiences that allow people to
         collaborate with each other with ease.
-      </p>
-    </ContentSectionPane>
+      </Type.p>
+    </ContentSection.Pane>
   </ContentSection>
 );
 
@@ -31,51 +36,52 @@ const ContributorsList = contributorsData.map((person, index) => {
     return null;
   }
   return (
-    <div key={index} className="person">
-      <div className="person-avatar">
+    <StyledPerson key={index}>
+      <StyledPersonAvatar>
         <img src={person.avatar_url} />
-      </div>
-      <div className="person-details">
-        <div className="person-name">{person.name || "@" + person.login}</div>
-      </div>
-      <div className="person-social">
-        <div key={index} className="social-item">
+      </StyledPersonAvatar>
+      <StyledPersonDetails>
+        <StyledPersonName>{person.name || '@' + person.login}</StyledPersonName>
+      </StyledPersonDetails>
+      <StyledPersonSocial>
+        <StyledPersonSocialItem key={index}>
           <a href={person.html_url} target="_blank">
-            <i className="mdi mdi-github-circle" />
+            <GithubCircleIcon />
           </a>
           {person.blog ? (
             <a href={person.blog} target="_blank">
-              <i className="mdi mdi-web" />
+              <WebIcon />
             </a>
           ) : null}
-        </div>
-      </div>
-    </div>
+        </StyledPersonSocialItem>
+      </StyledPersonSocial>
+    </StyledPerson>
   );
 });
 
 const Contributors = () => (
   <ContentSection>
-    <ContentSectionPane layout="center">
-      <h3>Contributors</h3>
+    <ContentSection.Pane center layout="center" full>
+      <Type.h3>Contributors</Type.h3>
       <div className="grid">
-        <div className="grid-wrapper">{ContributorsList}</div>
+        <StyledGridWrapper>{ContributorsList}</StyledGridWrapper>
       </div>
-    </ContentSectionPane>
+    </ContentSection.Pane>
   </ContentSection>
 );
 
 export default class AboutPage extends React.Component<OSProps, void> {
   render() {
-    let themeColor = "#334865";
-
+    let themeColor = '#334865';
     return (
-      <Layout pageTitle=": We're people, not software!" themeColor={themeColor}>
+      <Layout>
         <PageHeader themeColor={themeColor}>
-          <PageHeaderLeft>
-            <h1>About nteract</h1>
+          <PageHeader.Left>
+            <PageHeader.Title>
+              <>About nteract</>
+            </PageHeader.Title>
             <p>{`We're people, not software!`}</p>
-          </PageHeaderLeft>
+          </PageHeader.Left>
         </PageHeader>
         <Mission />
         <Contributors />

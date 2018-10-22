@@ -1,143 +1,120 @@
 // @flow
-import Layout from "../components/layout/layout";
-import { ContentSection } from "../components/content-section/content-section";
-import React from "react";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { darcula } from "react-syntax-highlighter/styles/hljs";
-import {
-  PageHeader,
-  PageHeaderLeft,
-  PageHeaderRight
-} from "../components/page-header/page-header";
+import * as React from 'react';
+import { colors } from '@common/colors'
+import Layout from '@components/layout'
+import { Hero } from '@components/hero';
+import { Type, BashPre } from '@components/typography';
+import { ContentSection, ContentSections } from '@components/content-section';
+import { Button, Buttons } from '@components/button';
+import { CutoffImage } from '@components/cutoff-image';
 
-const installCode = `apm install hydrogen`;
-
-const InteractiveCoding = () => (
-  <ContentSection>
-    <div className="panes center-vertically">
-      <div className="pane-50 pane">
-        <div className="section-graphic">
-          <video
-            style={{ boxShadow: "0 4px 14px 0 rgba(0,0,0,.1)" }}
-            autoPlay
-            loop
-          >
-            <source src="static/atom/interactive.mp4" type="video/mp4" />
-            <image src="static/atom/interactive.png" alt="Interactive coding" />
-          </video>
-        </div>
-      </div>
-      <div className="pane-50 pane">
-        <h3>Interactive computing in Atom</h3>
-        <p>Choose which code to execute based on your needs.</p>
-        <p>
-          Run the whole file, a single line, a selection, or let Hydrogen decide
-          which code to run based on the current cursor position.
-        </p>
-      </div>
-    </div>
-  </ContentSection>
-);
-
-const WatchExpressions = () => (
-  <ContentSection>
-    <div className="panes center-vertically">
-      <div className="pane-50 pane">
-        <h3>Watch Expressions</h3>
-        <p>
-          Get instant feedback on your written code every time you hit execute.
-        </p>
-      </div>
-      <div className="pane-50 pane">
-        <div className="section-graphic">
-          <video
-            style={{ boxShadow: "0 4px 14px 0 rgba(0,0,0,.1)" }}
-            autoPlay
-            loop
-          >
-            <source src="static/atom/watch-expressions.mp4" type="video/mp4" />
-            <image
-              src="static/atom/watch-expressions.png"
-              alt="Watch Expressions"
-            />
-          </video>
-        </div>
-      </div>
-    </div>
-  </ContentSection>
+const Video = ({ mp4, webm, poster }) => (
+  <video poster={poster} preload="auto" autoPlay muted loop="loop">
+    {mp4 ? <source src={mp4} type="video/mp4" /> : null}
+    {webm ? <source src={webm} type="video/webm" /> : null}
+  </video>
 );
 
 const InspectCode = () => (
-  <ContentSection>
-    <div className="panes center-vertically">
-      <div className="pane-50 pane">
-        <div className="section-graphic">
-          <video
+  <ContentSection center>
+      <ContentSection.Pane visual>
+          <Video
             style={{ boxShadow: "0 4px 14px 0 rgba(0,0,0,.1)" }}
-            autoPlay
-            loop
-          >
-            <source src="static/atom/inspect.mp4" type="video/mp4" />
-            <image src="static/atom/inspect.png" alt="Code Completion" />
-          </video>
-        </div>
-      </div>
-      <div className="pane-50 pane">
-        <h3>Code Completion and Documentation</h3>
-        <p>
-          Code completion and a inspector for displaying metadata, like
+            mp4="static/atom/inspect.mp4"
+            poster="static/atom/inspect.png"
+            alt="Demo of code completion using atom, hydrogen and python"
+          />
+      </ContentSection.Pane>
+
+      <ContentSection.Pane>
+        <ContentSection.Title>Code Completion and Documentation</ContentSection.Title>
+        <Type.p>
+          Code completion and an inspector for displaying metadata, like
           documentation, are there to make your coding experience seamless.
-        </p>
-        <p>
+        </Type.p>
+        <Type.p>
           There’s no need to leave your favorite text editor to get the
           information you need to fuel your development process.
-        </p>
-      </div>
-    </div>
-  </ContentSection>
-);
+        </Type.p>
+      </ContentSection.Pane>
+  </ContentSection>)
+const InteractiveComputing = () => (
+          <ContentSection>
+            <ContentSection.Pane visual>
+              <Video
+                mp4="/static/atom/interactive.mp4"
+                poster="/static/atom/interactive.png"
+                alt="Demo of interactive computing using atom, hydrogen, and python"
+              />
+            </ContentSection.Pane>
+            <ContentSection.Pane>
+              <ContentSection.Title>
+                Interactive computing in Atom
+              </ContentSection.Title>
+              <Type.p>Choose which code to execute based on your needs.</Type.p>
+              <Type.p>
+                Run the whole file, a single line, a selection, or let Hydrogen
+                decide which code to run based on the current cursor position.
+              </Type.p>
+            </ContentSection.Pane>
+          </ContentSection>
+)
+const WatchExpressions = () => (
+  <ContentSection center>
+      <ContentSection.Pane>
+        <ContentSection.Title>Watch Expressions</ContentSection.Title>
+        <Type.p>
+          Get instant feedback on your written code every time you hit execute.
+        </Type.p>
+      </ContentSection.Pane>
+      <ContentSection.Pane visual>
+          <Video
+            style={{ boxShadow: "0 4px 14px 0 rgba(0,0,0,.1)" }}
+            mp4="static/atom/watch-expressions.mp4"
+            poster="static/atom/watch-expressions.png"
+            alt="Demo of watching expressions using hydrogen in atom."
+          />
+      </ContentSection.Pane>
+  </ContentSection>)
 
-export default class AtomPage extends React.Component<*, *> {
+class Atom extends React.Component<null, null> {
+  static async getInitialProps(ctx: *) {
+    return {};
+  }
+
   render() {
-    let themeColor = "#232323";
-
-    const h4Styles = {
-      color: "rgba(255,255,255,0.8)",
-      marginBottom: "0"
-    };
-
     return (
-      <Layout pageTitle=": Hydrogen for Atom" themeColor={themeColor}>
-        <PageHeader themeColor={themeColor}>
-          <PageHeaderLeft>
-            <h1>Hydrogen</h1>
+      <Layout>
+        <Hero color="#232323">
+          <Hero.Pane padding="0 20px 0 0">
+            <Hero.Title>Hydrogen</Hero.Title>
 
-            <p>
+            <Type.p>
               Run your code with an interactive REPL session with your language
-              of choice inside GitHub’s <a href="https://atom.io/">Atom</a> text
-              editor.
-            </p>
-            <p>
+              of choice inside GitHub’s Atom text editor.
+            </Type.p>
+
+            <Type.p>
               All the power of Jupyter kernels, inside your favorite text
               editor.
-            </p>
-            <h4 style={h4Styles}>Install Hydrogen now with</h4>
-            <SyntaxHighlighter language="zsh" style={darcula}>
-              {installCode}
-            </SyntaxHighlighter>
-          </PageHeaderLeft>
-          <PageHeaderRight>
-            <img
-              src="static/atom/featured.png"
-              alt="Hydrogen"
-              className="cutoff-image"
-            />
-          </PageHeaderRight>
-        </PageHeader>
-        <InteractiveCoding />
-        <WatchExpressions />
-        <InspectCode />
+            </Type.p>
+
+            <Type.h4 style={{color: 'rgba(255,255,255, 0.8)'}} padding="20px 0 0 0">Install Hydrogen now with</Type.h4>
+            <BashPre bgColor={colors.darkerGrayColor} color={colors.lightCodeColor}>{`apm install hydrogen`}</BashPre>
+          </Hero.Pane>
+
+          <Hero.Pane visual padding="40px 0 0 0">
+            <CutoffImage src="/static/atom/featured.png" alt="Atom Hero Image" />
+          </Hero.Pane>
+        </Hero>
+        <ContentSections>
+          <InteractiveComputing />
+          <WatchExpressions />
+          <InspectCode />
+        </ContentSections>
       </Layout>
     );
   }
 }
+
+export default Atom;
